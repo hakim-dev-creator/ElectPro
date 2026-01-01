@@ -6,7 +6,6 @@
     <title>بوابة سونلغاز - النظام المتكامل</title>
     <style>
         :root {
-            /* تم تغيير اللون الأساسي إلى البرتقالي */
             --primary: #f39200; 
             --secondary: #ffb74d; 
             --bg: #030712;
@@ -17,7 +16,6 @@
 
         body {
             background: var(--bg);
-            /* تغيير تدرج الخلفية ليتناسب مع البرتقالي */
             background-image: radial-gradient(at 0% 0%, rgba(243, 146, 0, 0.15) 0px, transparent 50%),
                               radial-gradient(at 100% 100%, rgba(255, 183, 77, 0.08) 0px, transparent 50%);
             color: var(--text); font-family: system-ui, sans-serif; margin: 0; padding: 15px; min-height: 100vh;
@@ -56,7 +54,6 @@
         #pin-overlay { position: fixed; inset: 0; background: rgba(3,7,18,0.98); display: none; align-items: center; justify-content: center; z-index: 9999; backdrop-filter: blur(20px); }
 
         .action-btns { display: flex; gap: 8px; }
-        .btn-edit { background: rgba(243, 146, 0, 0.15); color: var(--primary); padding: 8px 12px; border-radius: 10px; border:none; cursor:pointer; font-weight:600; }
         .btn-delete { background: rgba(239, 68, 68, 0.15); color: var(--danger); padding: 8px 12px; border-radius: 10px; border:none; cursor:pointer; font-weight:600; }
 
         .page { display: none; animation: fadeIn 0.4s ease; }
@@ -217,36 +214,21 @@
     function renderAdminList() {
         sortWorkers();
         const list = document.getElementById('admin-list');
-        list.innerHTML = '<h4 style="text-align:center; color:#94a3b8;">العمال المسجلين (بالسن)</h4>';
+        list.innerHTML = '<h4 style="text-align:center; color:#94a3b8;">العمال مرتبين من الأكبر سنا إلى الاصغر</h4>';
         workers.forEach(w => {
             list.innerHTML += `<div class="card" style="padding:15px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
                 <div><span style="font-weight:700">${w.name}</span><br><small style="color:#64748b">${w.birth}</small></div>
                 <div class="action-btns">
-                    <button class="btn-edit" onclick="editWorker(${w.id})">تعديل</button>
                     <button class="btn-delete" onclick="deleteWorker(${w.id})">حذف</button>
                 </div>
             </div>`;
         });
     }
 
-    function editWorker(id) {
-        const w = workers.find(x => x.id == id);
-        document.getElementById('edit-id').value = w.id;
-        document.getElementById('in-name').value = w.name;
-        document.getElementById('in-birth').value = w.birth;
-        document.getElementById('in-rec').value = w.rec;
-        document.getElementById('in-mil-y').value = w.milY;
-        document.getElementById('in-mil-m').value = w.milM;
-        document.getElementById('in-mil-d').value = w.milD;
-        document.getElementById('admin-title').innerText = "تعديل: " + w.name;
-        window.scrollTo({top:0, behavior:'smooth'});
-    }
-
     function loadWorkerData(targetId = null) {
         const id = targetId || document.getElementById('worker-select').value;
         if(!id) return document.getElementById('results-area').style.display='none';
         
-        // تحديث القائمة المنسدلة لتعكس الاختيار البرمجي
         document.getElementById('worker-select').value = id;
 
         const w = workers.find(x => x.id == id);
@@ -303,7 +285,6 @@
 
     function deleteWorker(id) { if(confirm("حذف؟")) { workers = workers.filter(x => x.id!=id); localStorage.setItem('sonelgaz_db', JSON.stringify(workers)); renderAdminList(); } }
 
-    // تشغيل البرنامج والبحث عن "مهملي عبد الحكيم" مباشرة
     window.onload = function() {
         updateSelectors();
         const defaultWorker = workers.find(w => w.name.includes("مهملي عبد الحكيم"));
